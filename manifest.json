@@ -1,0 +1,22 @@
+{
+  "manifest_version": 2,
+
+  "name": "FCB Ticket Reloader ",
+  "description": "This extension reloads the FC Bayern Tickets Site and notify if there are some tickets available",
+  "version": "0.1",
+  "background": {
+    "scripts": [
+      "background.js"
+      ],
+    "persistent": false
+  },
+  "page_action": {
+    "default_icon": "icon-19.png"
+  },
+  "permissions": [
+    "declarativeContent",
+    "activeTab",
+    "tabs",
+    "https://tickets.fcbayern.de/*"
+  ]
+}
