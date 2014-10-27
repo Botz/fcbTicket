@@ -27,7 +27,7 @@ chrome.pageAction.onClicked.addListener(function(tab) {
 chrome.tabs.onUpdated.addListener(function(tabId,changeInfo,tab){
   //console.log(changeInfo.status)
   if (changeInfo.status == "complete" && tab.url.indexOf("tickets.fcbayern.de") > 0) {
-    chrome.tabs.executeScript(tabId, {file: "content_script.js"});
+    chrome.tabs.executeScript(tabId, {file: "content_script.js", runAt: "document_end"});
   }
 });
 

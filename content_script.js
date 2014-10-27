@@ -7,6 +7,13 @@ if (tableCells.length == 1 && tableCells[0].firstChild.data == "Keine Tickets vo
   //Ticket available send message to background.js
   chrome.runtime.sendMessage({msg: "available"}, function(response) {
   });
+
+  //find first button an invoke href javascript action
+  var intoBasketButtons = document.getElementsByClassName('butt1');
+  if (intoBasketButtons.length > 0) {
+    var button = intoBasketButtons[0];
+    window.location.href = button.href;
+  }
 }
 
 
