@@ -20,12 +20,12 @@ chrome.runtime.onInstalled.addListener(function() {
 });
 
 
-chrome.pageAction.onClicked.addListener(function(tab) {
-    activated = !activated;
-    if (activated) {
-      chrome.tabs.executeScript(null, {file: "content_script.js"});
-    }
-});
+// chrome.pageAction.onClicked.addListener(function(tab) {
+//     activated = !activated;
+//     if (activated) {
+//       chrome.tabs.executeScript(null, {file: "content_script.js"});
+//     }
+// });
 
 chrome.tabs.onUpdated.addListener(function(tabId,changeInfo,tab){
   if (changeInfo.status == "complete" && tab.url.indexOf("tickets.fcbayern.de") > 0 && activated) {
@@ -36,7 +36,20 @@ chrome.tabs.onUpdated.addListener(function(tabId,changeInfo,tab){
 //register onmessage received listener to handle message from content_script.js
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
-    if (request.msg == "available") {
-      chrome.tabs.highlight({tabs: sender.tab.index}, function(window) {})
+    switch (request.msg) {
+      case "startButtonClick": //Message from popup.js
+        startButtonClick();
+        sendResponse(activated);
+        break;
+      case "available": //Message from content_script.js
+        chrome.tabs.highlight({tabs: sender.tab.index}, function(window) {})
+        break;
     }
 });
+
+function startButtonClick() {
+  activated = !activated;
+  if (activated) {
+    chrome.tabs.executeScript(null, {file: "content_script.js", runAt: "document_end"});
+  }
+}
