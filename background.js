@@ -1,4 +1,5 @@
-var clicks = 1;
+var activated = false;
+
 chrome.runtime.onInstalled.addListener(function() {
   // Replace all rules ...
   chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
@@ -20,13 +21,14 @@ chrome.runtime.onInstalled.addListener(function() {
 
 
 chrome.pageAction.onClicked.addListener(function(tab) {
-	  // No tabs or host permissions needed!
-    chrome.tabs.executeScript(null, {file: "content_script.js"});
+    activated = !activated;
+    if (activated) {
+      chrome.tabs.executeScript(null, {file: "content_script.js"});
+    }
 });
 
 chrome.tabs.onUpdated.addListener(function(tabId,changeInfo,tab){
-  //console.log(changeInfo.status)
-  if (changeInfo.status == "complete" && tab.url.indexOf("tickets.fcbayern.de") > 0) {
+  if (changeInfo.status == "complete" && tab.url.indexOf("tickets.fcbayern.de") > 0 && activated) {
     chrome.tabs.executeScript(tabId, {file: "content_script.js", runAt: "document_end"});
   }
 });
