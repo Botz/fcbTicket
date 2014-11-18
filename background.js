@@ -1,4 +1,5 @@
 var activated = false;
+var filters = null;
 
 chrome.runtime.onInstalled.addListener(function() {
   // Replace all rules ...
@@ -21,7 +22,7 @@ chrome.runtime.onInstalled.addListener(function() {
 
 chrome.tabs.onUpdated.addListener(function(tabId,changeInfo,tab){
   if (changeInfo.status == "complete" && tab.url.indexOf("tickets.fcbayern.de") > 0 && activated) {
-    chrome.tabs.executeScript(tabId, {file: "content_script.js", runAt: "document_end"});
+    sendFiltersToTab(filters, tabId);
   }
 });
 
@@ -30,7 +31,8 @@ chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
     switch (request.msg) {
       case "startButtonClick": //Message from popup.js
-        startButtonClick();
+        filters = request.filters;
+        startButtonClick(request.tabId);
         sendResponse(activated);
         break;
       case "available": //Message from content_script.js
@@ -40,9 +42,13 @@ chrome.runtime.onMessage.addListener(
 });
 
 //Action for "Start/Stop" Button in Popup
-function startButtonClick() {
+function startButtonClick(tabId) {
   activated = !activated;
   if (activated) {
-    chrome.tabs.executeScript(null, {file: "content_script.js", runAt: "document_end"});
+    sendFiltersToTab(filters, tabId);
   }
+}
+
+function sendFiltersToTab(filterObject, tabId) {
+  chrome.tabs.sendMessage(tabId, {action:"start", filters:filterObject});
 }
