@@ -19,14 +19,6 @@ chrome.runtime.onInstalled.addListener(function() {
   });
 });
 
-
-// chrome.pageAction.onClicked.addListener(function(tab) {
-//     activated = !activated;
-//     if (activated) {
-//       chrome.tabs.executeScript(null, {file: "content_script.js"});
-//     }
-// });
-
 chrome.tabs.onUpdated.addListener(function(tabId,changeInfo,tab){
   if (changeInfo.status == "complete" && tab.url.indexOf("tickets.fcbayern.de") > 0 && activated) {
     chrome.tabs.executeScript(tabId, {file: "content_script.js", runAt: "document_end"});
@@ -47,6 +39,7 @@ chrome.runtime.onMessage.addListener(
     }
 });
 
+//Action for "Start/Stop" Button in Popup
 function startButtonClick() {
   activated = !activated;
   if (activated) {
