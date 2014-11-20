@@ -7,11 +7,17 @@
   "background": {
     "scripts": [
       "background.js"
-      ],
-    "persistent": false
+      ]
   },
+  "content_scripts": [
+    {
+      "matches": ["https://tickets.fcbayern.de/*"],
+      "js": ["content_script.js"]
+    }
+  ],
   "page_action": {
-    "default_icon": "icon-19.png"
+    "default_icon": "icon-19.png",
+    "default_popup": "popup.html"
   },
   "permissions": [
     "declarativeContent",

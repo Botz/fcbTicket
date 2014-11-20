@@ -1,4 +1,6 @@
-var clicks = 1;
+var activated = false;
+var filters = null;
+
 chrome.runtime.onInstalled.addListener(function() {
   // Replace all rules ...
   chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
@@ -18,23 +20,36 @@ chrome.runtime.onInstalled.addListener(function() {
   });
 });
 
-
-chrome.pageAction.onClicked.addListener(function(tab) {
-	  // No tabs or host permissions needed!
-    chrome.tabs.executeScript(null, {file: "content_script.js"});
-});
-
 chrome.tabs.onUpdated.addListener(function(tabId,changeInfo,tab){
-  //console.log(changeInfo.status)
-  if (changeInfo.status == "complete" && tab.url.indexOf("tickets.fcbayern.de") > 0) {
-    chrome.tabs.executeScript(tabId, {file: "content_script.js", runAt: "document_end"});
+  if (changeInfo.status == "complete" && tab.url.indexOf("tickets.fcbayern.de") > 0 && activated) {
+    sendFiltersToTab(filters, tabId);
   }
 });
 
 //register onmessage received listener to handle message from content_script.js
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
-    if (request.msg == "available") {
-      chrome.tabs.highlight({tabs: sender.tab.index}, function(window) {})
+    switch (request.msg) {
+      case "startButtonClick": //Message from popup.js
+        filters = request.filters;
+        startButtonClick(request.tabId);
+        sendResponse(activated);
+        break;
+      case "available": //Message from content_script.js
+        activated = false;
+        chrome.tabs.highlight({tabs: sender.tab.index}, function(window) {})
+        break;
     }
 });
+
+//Action for "Start/Stop" Button in Popup
+function startButtonClick(tabId) {
+  activated = !activated;
+  if (activated) {
+    sendFiltersToTab(filters, tabId);
+  }
+}
+
+function sendFiltersToTab(filterObject, tabId) {
+  chrome.tabs.sendMessage(tabId, {action:"start", filters:filterObject});
+}
