@@ -14,15 +14,7 @@ function start(filters) {
   if (tableCells.length == 1 && tableCells[0].firstChild.data == "Keine Tickets vorhanden") {
     setTimeout(reload, 500);
   } else {
-    var loopStart = 0;
-    if (filters && filters.cat) {
-      loopStart = filters.cat;
-    }
-
-    var filterArray = [];
-    for (i = loopStart; i <=5; i++) {
-      filterArray.push("Kategorie "+i);
-    }
+    var filterArray = getFilterArray(filters); 
 
     for (i = 1; i < tableRows.length; i++) {
       var row = tableRows[i];
@@ -59,4 +51,17 @@ function intoBasket(row) {
   //Ticket available send message to background.js
   chrome.runtime.sendMessage({msg: "available"}, function(response) {
   });
+}
+
+function getFilterArray(filters) {
+  var loopStart = 0;
+  if (filters && filters.cat) {
+    loopStart = filters.cat;
+  }
+
+  var filterArray = [];
+  for (i = loopStart; i <=5; i++) {
+    filterArray.push("Kategorie "+i);
+  }
+  return filterArray;
 }
