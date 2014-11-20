@@ -36,6 +36,7 @@ chrome.runtime.onMessage.addListener(
         sendResponse(activated);
         break;
       case "available": //Message from content_script.js
+        activated = false;
         chrome.tabs.highlight({tabs: sender.tab.index}, function(window) {})
         break;
     }

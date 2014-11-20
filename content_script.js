@@ -14,9 +14,19 @@ function start(filters) {
   if (tableCells.length == 1 && tableCells[0].firstChild.data == "Keine Tickets vorhanden") {
     setTimeout(reload, 500);
   } else {
+    var loopStart = 0;
+    if (filters && filters.cat) {
+      loopStart = filters.cat;
+    }
+
+    var filterArray = [];
+    for (i = loopStart; i <=5; i++) {
+      filterArray.push("Kategorie "+i);
+    }
+
     for (i = 1; i < tableRows.length; i++) {
       var row = tableRows[i];
-      var found = checkRow(row, filters);
+      var found = checkRow(row, filterArray);
       if (found) {
         break;
       }
@@ -27,11 +37,11 @@ function start(filters) {
   }
 }
 
-function checkRow(row, filters) {
+function checkRow(row, filterArray) {
   var cat = row.cells[0].innerHTML;
   var block = row.cells[1].innerHTML;
 
-  if (!filters || cat == filters.cat) {
+  if (filterArray.indexOf(cat) >= 0) {
     intoBasket(row);
     return true;
   }
