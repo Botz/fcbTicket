@@ -10,7 +10,7 @@ chrome.runtime.onInstalled.addListener(function() {
         // That fires when a page's URL contains a 'g' ...
         conditions: [
           new chrome.declarativeContent.PageStateMatcher({
-            pageUrl: { urlContains: 'tickets.fcbayern.de' },
+            pageUrl: { urlContains: 'tickets.fcbayern.com' },
           })
         ],
         // And shows the extension's page action.
@@ -21,7 +21,7 @@ chrome.runtime.onInstalled.addListener(function() {
 });
 
 chrome.tabs.onUpdated.addListener(function(tabId,changeInfo,tab){
-  if (changeInfo.status == "complete" && tab.url.indexOf("tickets.fcbayern.de") > 0 && activated) {
+  if (changeInfo.status == "complete" && tab.url.indexOf("tickets.fcbayern.com") > 0 && activated) {
     sendFiltersToTab(filters, tabId);
   }
 });

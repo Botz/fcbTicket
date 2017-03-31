@@ -11,7 +11,7 @@
   },
   "content_scripts": [
     {
-      "matches": ["https://tickets.fcbayern.de/*"],
+      "matches": ["https://tickets.fcbayern.com/*"],
       "js": ["content_script.js"]
     }
   ],
@@ -23,6 +23,6 @@
     "declarativeContent",
     "activeTab",
     "tabs",
-    "https://tickets.fcbayern.de/*"
+    "https://tickets.fcbayern.com/*"
   ]
 }

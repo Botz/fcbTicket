@@ -30,10 +30,8 @@ function start(filters) {
 }
 
 function checkRow(row, filterArray) {
-  var cat = row.cells[0].innerHTML;
-  var block = row.cells[1].innerHTML;
-
-  if (filterArray.indexOf(cat) >= 0) {
+  var block = row.cells[0].firstElementChild.firstElementChild.firstElementChild.innerHTML;
+  if (filterArray.indexOf(parseInt(block)) >= 0) {
     intoBasket(row);
     return true;
   }
@@ -45,7 +43,7 @@ function reload() {
 }
 
 function intoBasket(row) {
-  var intoBasketButton = row.cells[6].firstElementChild
+  var intoBasketButton = row.cells[0].getElementsByClassName('cart-buttons-second-button')[0];
   window.location.href = intoBasketButton.href;
 
   //Ticket available send message to background.js
@@ -54,14 +52,21 @@ function intoBasket(row) {
 }
 
 function getFilterArray(filters) {
-  var loopStart = 0;
-  if (filters && filters.cat) {
-    loopStart = filters.cat;
+  if (filters.cat == 6) { //EGAL
+    var result = [];
+    for (i = 99; i < 400; i++) {
+      result.push(i);
+    }
+    return result;
   }
 
-  var filterArray = [];
-  for (i = loopStart; i <=5; i++) {
-    filterArray.push("Kategorie "+i);
+  var cats = {
+    1: [],
+    2: [226, 235, 214, 247],
+    3: [],
+    4: [308, 309, 310, 311, 312, 313, 314, 315, 316, 317, 318, 319, 320, 321, 322, 323, 332, 333, 334, 335, 336, 337, 338, 339, 340, 341, 342, 343, 344, 345, 346, 347],
+    5: [109, 110, 111, 112, 113, 114, 115, 116, 117, 126, 127, 128, 129, 130, 131, 132, 133, 134]
   }
-  return filterArray;
+
+  return cats[filters.cat];
 }
