@@ -16,7 +16,7 @@ function start(filters) {
   } else {
     var filterArray = getFilterArray(filters); 
 
-    for (i = 1; i < tableRows.length; i++) {
+    for (i = 3; i < tableRows.length; i++) {
       var row = tableRows[i];
       var found = checkRow(row, filterArray);
       if (found) {
@@ -30,6 +30,7 @@ function start(filters) {
 }
 
 function checkRow(row, filterArray) {
+  console.log(row)
   var block = row.cells[0].firstElementChild.firstElementChild.firstElementChild.innerHTML;
   if (filterArray.indexOf(parseInt(block)) >= 0) {
     intoBasket(row);
@@ -61,7 +62,7 @@ function getFilterArray(filters) {
   }
 
   var cats = {
-    1: [],
+    1: [101, 102, 103, 104, 105, 106, 107, 119, 120, 121],
     2: [226, 235, 214, 247],
     3: [],
     4: [308, 309, 310, 311, 312, 313, 314, 315, 316, 317, 318, 319, 320, 321, 322, 323, 332, 333, 334, 335, 336, 337, 338, 339, 340, 341, 342, 343, 344, 345, 346, 347],
