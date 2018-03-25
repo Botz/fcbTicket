@@ -16,7 +16,7 @@ function start(filters) {
   } else {
     var filterArray = getFilterArray(filters); 
 
-    for (i = 3; i < tableRows.length; i++) {
+    for (i = 1; i < tableRows.length; i++) {
       var row = tableRows[i];
       var found = checkRow(row, filterArray);
       if (found) {

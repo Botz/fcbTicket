@@ -3,7 +3,7 @@
 
   "name": "FCB Ticket Reloader ",
   "description": "This extension reloads the FC Bayern Tickets Site and notify if there are some tickets available",
-  "version": "0.1",
+  "version": "0.2",
   "background": {
     "scripts": [
       "background.js"
